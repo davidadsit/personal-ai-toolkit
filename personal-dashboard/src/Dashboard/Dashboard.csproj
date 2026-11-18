@@ -13,6 +13,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Page/page.css" LogicalName="page.css" />
     <EmbeddedResource Include="Page/page.js" LogicalName="page.js" />
+    <EmbeddedResource Include="Page/favicon.svg" LogicalName="favicon.svg" />
     <EmbeddedResource Include="Page/themes/*.css" LogicalName="themes/%(Filename).css" />
   </ItemGroup>
 

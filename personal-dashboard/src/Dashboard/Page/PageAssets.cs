@@ -8,6 +8,9 @@ public static class PageAssets
 
     public static string Script { get; } = Read("page.js");
 
+    public static string FaviconDataUri { get; } =
+        "data:image/svg+xml;base64," + Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(Read("favicon.svg")));
+
     public static string Theme(string name)
     {
         var resource = ThemePrefix + name + ".css";

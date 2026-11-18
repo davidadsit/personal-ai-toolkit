@@ -189,6 +189,7 @@ Each project takes one of the theme's 10 colours, cycled by its position in the 
 - Below 760px: board lanes stack vertically.
 - Light and dark colour schemes follow the system setting.
 - Style: a light grey page. The board lanes are darker grey rounded panels. Each right-hand panel is a white rounded card. Section and lane headings are small uppercase labels with letter spacing, and counts sit in round pills. The selected "All" button is solid accent colour. Each email's ✓ is a round button on the right.
+- Tab icon: an inline SVG data URI showing a kanban board, navy with white cards and one gold card in the last column. It is the same in every theme.
 - Header: "Dashboard", then "Generated YYYY-MM-DD h:mm AM MT. It reloads every 15 seconds." using the configured label and interval.
 
 ### 6.2 Projects and board

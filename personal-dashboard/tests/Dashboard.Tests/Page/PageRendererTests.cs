@@ -39,6 +39,16 @@ public class PageRendererTests
     }
 
     [Fact]
+    public void Page_has_the_board_favicon_as_an_svg_data_uri()
+    {
+        var link = Regex.Match(Render(), "<link rel=\"icon\" type=\"image/svg\\+xml\" href=\"data:image/svg\\+xml;base64,([^\"]+)\">");
+
+        var svg = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(link.Groups[1].Value));
+        Assert.StartsWith("<svg", svg);
+        Assert.Contains("fill=\"#f2b84b\"", svg);
+    }
+
+    [Fact]
     public void Project_list_has_all_button_and_one_button_per_open_project()
     {
         var projects = Section(Render([Plan(0, "In progress", "a"), Plan(1, "Done")]), "projects");
