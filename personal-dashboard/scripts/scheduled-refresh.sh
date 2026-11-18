@@ -1,0 +1,19 @@
+#!/bin/sh
+root="$(cd "$(dirname "$0")/.." && pwd)"
+export PATH="/usr/local/share/dotnet:$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+mkdir -p "$root/dashboard"
+cd "$root" || exit 1
+
+allowed_tools="Read,Grep,Glob,Edit(./dashboard/**),Bash(scripts/dashboard),Bash(scripts/dashboard archive-done *)"
+allowed_tools="$allowed_tools,mcp__claude_ai_Google_Calendar__list_events"
+allowed_tools="$allowed_tools,mcp__claude_ai_Gmail__search_threads,mcp__claude_ai_Gmail__get_thread,mcp__claude_ai_Gmail__unlabel_thread"
+
+{
+  echo "== $(date '+%Y-%m-%d %H:%M')"
+  claude -p "/dashboard" \
+    --settings '{"disableAllHooks": true}' \
+    --permission-mode dontAsk \
+    --no-session-persistence \
+    --allowedTools "$allowed_tools" </dev/null
+  scripts/dashboard
+} >>"$root/dashboard/refresh.log" 2>&1

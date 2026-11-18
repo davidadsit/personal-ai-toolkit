@@ -1,0 +1,5 @@
+bin/
+obj/
+dashboard/*
+!dashboard/open-items.json
+.build/

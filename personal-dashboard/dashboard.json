@@ -1,0 +1,16 @@
+{
+  "timeZone": "America/Denver",
+  "timeZoneLabel": "MT",
+  "port": 8771,
+  "calendarUrl": "https://calendar.google.com/calendar/r",
+  "reloadSeconds": 15,
+  "doneShown": 2,
+  "recentBusinessDays": 2,
+  "theme": "default",
+  "keyPeople": [],
+  "criticalRules": [
+    "A 1:1 with someone on the key people list",
+    "A meeting I organize",
+    "A meeting where a decision or deliverable of mine is due"
+  ]
+}

@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>PersonalDashboard</RootNamespace>
+    <AssemblyName>dashboard</AssemblyName>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Page/page.css" LogicalName="page.css" />
+    <EmbeddedResource Include="Page/page.js" LogicalName="page.js" />
+    <EmbeddedResource Include="Page/themes/*.css" LogicalName="themes/%(Filename).css" />
+  </ItemGroup>
+
+</Project>
