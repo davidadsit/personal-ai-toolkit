@@ -43,7 +43,7 @@ One file, for example `dashboard.json` at the workspace root:
 }
 ```
 
-`theme` names a stylesheet in `src/Dashboard/Page/themes/`. An unknown name stops generation with an error that lists the available themes. Each theme defines every colour token (including `--pill`, the count pill background, which must stand out from the lane in both light and dark mode), the 10 project hues (`--project-hue-0` to `--project-hue-9`), a heading font and an optional background image (`--backdrop`). Three themes ship: `default`; `autumn`, which has harvest colours, serif headings and a pattern of large maple leaves; and `christmas`, which has red, green and gold, serif headings, and a pattern of snowflakes and holly. Switching themes changes only this setting.
+`theme` names a stylesheet in `src/Dashboard/Page/themes/`. An unknown name stops generation with an error that lists the available themes. Each theme defines every colour token (including `--pill`, the count pill background, which must stand out from the lane in both light and dark mode), the 10 project hues (`--project-hue-0` to `--project-hue-9`) with optional saturation factors, a heading font and an optional background image (`--backdrop`). Three themes ship: `default`; `autumn`, which has harvest colours, serif headings and a pattern of large maple leaves; and `christmas`, which has red, green and gold, serif headings, and a pattern of snowflakes and holly. Switching themes changes only this setting.
 
 The skill reads its own rules from the same file (section 9): key people, and which meetings and emails count as important.
 
@@ -178,7 +178,7 @@ Within a lane, steps with exactly the same text (after removing `**Now:**`) from
 
 ### 5.4 Colours
 
-Each project takes one of the theme's 10 hues, cycled by its position in the index. The default theme uses cool hues: `210, 150, 270, 185, 240, 130, 290, 195, 165, 255`. A card or project button has a pale tint of its hue, with a stronger 5px left edge. The theme sets the saturation and lightness of the tint and edge. In the default theme's light mode the tint is saturation 70% and lightness 95%, and the edge 55% and 45%. In its dark mode the tint is 28% and 21%, and the edge 60% and 62%.
+Each project takes one of the theme's 10 colours, cycled by its position in the index. A colour is a hue (`--project-hue-N`) and an optional saturation factor (`--project-saturation-N`, default 1) that scales the theme's tint and edge saturation, so a muted orange reads as brown. The default theme uses cool hues: `210, 150, 270, 185, 240, 130, 290, 195, 165, 255`. A card or project button has a pale tint of its hue, with a stronger 5px left edge. The theme sets the saturation and lightness of the tint and edge. In the default theme's light mode the tint is saturation 70% and lightness 95%, and the edge 55% and 45%. In its dark mode the tint is 28% and 21%, and the edge 60% and 62%.
 
 ## 6. Page
 

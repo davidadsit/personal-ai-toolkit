@@ -221,7 +221,7 @@ public class PageRendererTests
     private const string SvgNamespace = "http://www.w3.org/2000/svg";
 
     [Theory]
-    [InlineData("autumn", "--project-hue-0: 22;")]
+    [InlineData("autumn", "--project-hue-0: 24;")]
     [InlineData("christmas", "--project-hue-0: 355;")]
     public void Page_uses_the_configured_theme(string theme, string firstHue)
     {
@@ -276,7 +276,7 @@ public class PageRendererTests
 
         var items = Section(Render([Plan(0, "Planned", "a"), Plan(1, "Planned", "b")], openItems: feed), "open-items");
 
-        Assert.Matches("Raised 2026-11-17 <span class=\"item-project tinted\" style=\"--hue:var\\(--project-hue-1\\)\">P2. Project 2</span>", items);
+        Assert.Matches("Raised 2026-11-17 <span class=\"item-project tinted\" style=\"--hue:var\\(--project-hue-1\\);--saturation:var\\(--project-saturation-1, 1\\)\">P2. Project 2</span>", items);
     }
 
     [Fact]
@@ -337,5 +337,19 @@ public class PageRendererTests
         var feed = new OpenItemsFeed([new OpenItem("Q1", "question", "When?", new DateOnly(2026, 11, 17))]);
 
         Assert.Contains("<p id=\"no-open-items-for-project\" class=\"muted\" hidden>Nothing open for this project.</p>", Section(Render(openItems: feed), "open-items"));
+    }
+
+    [Fact]
+    public void Card_takes_the_saturation_of_its_project_position()
+    {
+        var board = Section(Render([Plan(0, "Planned", "a"), Plan(1, "Planned", "b")]), "board");
+
+        Assert.Contains("--saturation:var(--project-saturation-1, 1)", board);
+    }
+
+    [Fact]
+    public void Autumn_theme_mutes_some_projects_into_browns()
+    {
+        Assert.Matches(@"--project-saturation-\d: 0\.\d+;", Render(theme: "autumn"));
     }
 }

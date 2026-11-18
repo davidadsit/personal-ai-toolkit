@@ -27,6 +27,6 @@ public static class ProjectListSection
     private static string Button(Project project, string title)
     {
         var meta = string.Join(" · ", new[] { project.Status, project.NextDate }.Where(part => part != "").Select(ToHtml));
-        return $"""<button class="project tinted" data-project="{project.Position}" style="{ProjectColor.Hue(project.Position)}">{Encode(title)}<span class="project-meta">{meta}</span></button>""";
+        return $"""<button class="project tinted" data-project="{project.Position}" style="{ProjectColor.Style(project.Position)}">{Encode(title)}<span class="project-meta">{meta}</span></button>""";
     }
 }

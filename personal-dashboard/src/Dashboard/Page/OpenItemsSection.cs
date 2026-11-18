@@ -41,6 +41,6 @@ public static class OpenItemsSection
         }
         return project is null
             ? $""" <span class="item-project">{Encode(projectId)}</span>"""
-            : $""" <span class="item-project tinted" style="{ProjectColor.Hue(project.Position)}">{Encode(project.Title)}</span>""";
+            : $""" <span class="item-project tinted" style="{ProjectColor.Style(project.Position)}">{Encode(project.Title)}</span>""";
     }
 }

@@ -35,8 +35,8 @@ code { font-family: ui-monospace, Menlo, monospace; font-size: 0.9em; }
   border: 1px solid var(--border); border-radius: 6px; padding: 7px 12px; background: var(--surface);
 }
 .tinted {
-  background: hsl(var(--hue) var(--tint-s) var(--tint-l));
-  border-left: 5px solid hsl(var(--hue) var(--edge-s) var(--edge-l));
+  background: hsl(var(--hue) calc(var(--tint-s) * var(--saturation, 1)) var(--tint-l));
+  border-left: 5px solid hsl(var(--hue) calc(var(--edge-s) * var(--saturation, 1)) var(--edge-l));
 }
 .project.selected { outline: 2px solid var(--accent); outline-offset: 1px; }
 .project[data-all].selected { background: var(--accent); color: var(--accent-text); border-color: var(--accent); outline: 0; }

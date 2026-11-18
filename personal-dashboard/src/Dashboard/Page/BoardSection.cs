@@ -43,9 +43,9 @@ public static class BoardSection
 
     private static string CardStyle(Card card)
     {
-        var style = ProjectColor.Hue(card.Projects[0].Position);
+        var style = ProjectColor.Style(card.Projects[0].Position);
         var stackedEdges = card.Projects.Skip(1).Select((project, index) =>
-            $"{StackOffsetPixels * (index + 1)}px {StackOffsetPixels * (index + 1)}px 0 hsl({ProjectColor.HueVariable(project.Position)} var(--edge-s) var(--edge-l))");
+            $"{StackOffsetPixels * (index + 1)}px {StackOffsetPixels * (index + 1)}px 0 {ProjectColor.Edge(project.Position)}");
         return card.Projects.Count == 1 ? style : $"{style};box-shadow:{string.Join(",", stackedEdges)}";
     }
 }
