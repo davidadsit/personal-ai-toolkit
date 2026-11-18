@@ -1,9 +1,8 @@
 #!/bin/sh
 set -e
-root="$(cd "$(dirname "$0")/.." && pwd)"
-out="$root/.build"
-if [ ! -f "$out/dashboard.dll" ] || [ -n "$(find "$root/src" -newer "$out/dashboard.dll" -type f ! -path '*/obj/*' ! -path '*/bin/*' -print -quit)" ]; then
-  dotnet build "$root/src/Dashboard" -c Release -o "$out" --nologo -v quiet >/dev/null
+code="$(cd "$(dirname "$0")/.." && pwd)"
+out="$code/.build"
+if [ ! -f "$out/dashboard.dll" ] || [ -n "$(find "$code/src" -newer "$out/dashboard.dll" -type f ! -path '*/obj/*' ! -path '*/bin/*' -print -quit)" ]; then
+  dotnet build "$code/src/Dashboard" -c Release -o "$out" --nologo -v quiet >/dev/null
 fi
-cd "$root"
 exec dotnet "$out/dashboard.dll" "$@"

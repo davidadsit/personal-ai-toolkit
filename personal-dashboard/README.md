@@ -12,6 +12,23 @@ A local page with a kanban board built from `projects/`, today's meetings, email
 
 Project hooks in `.claude/settings.json` regenerate the page after every turn, ask Claude to archive queued emails, and start and stop the server with the session.
 
+## Keep your data in its own repo
+
+The folder you run the dashboard from is its workspace. Out of the box that's this folder, with example data. To keep your projects and open items private, make a separate workspace repo that holds only your data and includes this toolkit as a git submodule:
+
+```
+my-dashboard/
+  dashboard.json
+  projects/
+  dashboard/open-items.json
+  scripts/dashboard            # shim: exec "$(dirname "$0")/../toolkit/personal-dashboard/scripts/dashboard" "$@"
+  .claude/settings.json        # hooks: "$CLAUDE_PROJECT_DIR"/toolkit/personal-dashboard/scripts/hooks/<hook>.sh
+  .claude/skills/dashboard     # link or copy of toolkit/personal-dashboard/.claude/skills/dashboard
+  toolkit/                     # git submodule of personal-ai-toolkit
+```
+
+Install the scheduler with `toolkit/personal-dashboard/scripts/install-scheduler.sh` run from that workspace.
+
 ## Other Claude sessions
 
 Sessions working in other folders add their projects, tasks and open items by following [docs/agents.md](docs/agents.md). `prompts/system_prompt.md` in the toolkit points every session there.

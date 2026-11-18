@@ -1,6 +1,5 @@
 #!/bin/sh
-root="$(cd "$(dirname "$0")/../.." && pwd)"
-queue="$root/dashboard/archive-queue.json"
+queue="${CLAUDE_PROJECT_DIR:-$PWD}/dashboard/archive-queue.json"
 
 if [ "$(jq -r '.stop_hook_active // false')" = "true" ] || [ ! -f "$queue" ]; then
   exit 0

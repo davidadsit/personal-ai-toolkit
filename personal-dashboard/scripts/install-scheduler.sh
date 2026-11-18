@@ -1,6 +1,7 @@
 #!/bin/sh
 set -e
-root="$(cd "$(dirname "$0")/.." && pwd)"
+code="$(cd "$(dirname "$0")/.." && pwd)"
+workspace="$(cd "${1:-$PWD}" && pwd)"
 label="com.$(id -un).dashboard"
 plist="$HOME/Library/LaunchAgents/$label.plist"
 
@@ -17,9 +18,9 @@ cat >"$plist" <<PLIST
 <plist version="1.0">
 <dict>
   <key>Label</key><string>$label</string>
-  <key>ProgramArguments</key><array><string>$root/scripts/scheduled-refresh.sh</string></array>
+  <key>ProgramArguments</key><array><string>$code/scripts/scheduled-refresh.sh</string><string>$workspace</string></array>
   <key>StartCalendarInterval</key><array>$intervals</array>
-  <key>StandardErrorPath</key><string>$root/dashboard/launchd.log</string>
+  <key>StandardErrorPath</key><string>$workspace/dashboard/launchd.log</string>
 </dict>
 </plist>
 PLIST

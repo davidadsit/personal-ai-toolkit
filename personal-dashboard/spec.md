@@ -258,7 +258,7 @@ Each project takes one of the theme's 10 hues, cycled by its position in the ind
 - **`dashboard serve`:** does the same, then serves the page and writes its process ID to `dashboard/server.pid`.
 - **`dashboard archive-done <thread>`:** removes the thread from `archive-queue.json` while holding the lock file, and from `emails.json`. The skill uses it so that Claude never edits the queue directly.
 - `scripts/dashboard` runs the program, rebuilding it first when the source has changed. Hooks, the skill and the scheduler all call it.
-- The workspace root is found by walking up from the current directory to the first folder that holds `dashboard.json` or `.git`.
+- The workspace root is found by walking up from the current directory to the first folder that holds `dashboard.json` or `.git`. The code may live elsewhere. Scripts and hooks act on the folder they run in, or on `$CLAUDE_PROJECT_DIR` when Claude Code runs them, never on the folder that holds the code.
 
 ## 8. Server
 
