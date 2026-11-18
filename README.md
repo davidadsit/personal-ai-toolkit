@@ -17,6 +17,17 @@ How I work with Claude Code day to day: the system prompts I give every session,
 3. Edit the prompts to fit how you work. They're written for me, so change anything that doesn't fit you.
 4. For the dashboard, follow [personal-dashboard/README.md](personal-dashboard/README.md). It needs the .NET 10 SDK, `jq`, `curl`, and Claude Code with the Google Calendar and Gmail connectors.
 
+## Keep personal data out of a public fork
+
+If you publish your own copy, turn on the pre-push check. It blocks a push when any line it adds contains a personal term, and it reads those terms from your private dashboard workspace, so the list itself never becomes public:
+
+```
+git config core.hooksPath .githooks
+git config personal-ai.private-workspace ~/code/my-dashboard
+```
+
+The terms are the `keyPeople` list in that workspace's `dashboard.json`, every line of its `public-denylist.txt` except `#` comments, and your git email. Matching is whole words, in any case.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
