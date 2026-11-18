@@ -13,7 +13,7 @@ How I work with Claude Code day to day: the system prompts I give every session,
 ## Set up
 
 1. Clone into `~/code/personal-ai-toolkit`, or anywhere else and set `PERSONAL_AI_TOOLKIT` to that path.
-2. Add `source ~/code/personal-ai-toolkit/shell/aliases.zsh` to `~/.zshrc`.
+2. Add `source ~/code/personal-ai-toolkit/shell/aliases.zsh` to `~/.zshrc`. To add instructions of your own, such as where your private dashboard workspace lives, put them in a file and set `PERSONAL_AI_PROMPT` to its path before that line. The aliases append it after the toolkit prompts.
 3. Edit the prompts to fit how you work. They're written for me, so change anything that doesn't fit you.
 4. For the dashboard, follow [personal-dashboard/README.md](personal-dashboard/README.md). It needs the .NET 10 SDK, `jq`, `curl`, and Claude Code with the Google Calendar and Gmail connectors.
 

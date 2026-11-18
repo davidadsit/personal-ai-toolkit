@@ -175,9 +175,10 @@ Let me know if you want me to look into anything else.
 
 ## Personal Dashboard
 
-I track every project, task and open item in one dashboard: the repo `~/code/personal-ai-toolkit/personal-dashboard`, served at http://127.0.0.1:8771/. Record any work I should see there, so everything shows in one place.
+I track every project, task and open item in one dashboard, served at http://127.0.0.1:8771/. Its workspace is `~/code/personal-ai-toolkit/personal-dashboard`, unless my personal prompt names another one. Record any work I should see there, so everything shows in one place.
 
 - Before your first dashboard change, read `~/code/personal-ai-toolkit/personal-dashboard/docs/agents.md`. It gives the file formats and the rules.
+- The workspace holds `projects/` and `dashboard/open-items.json`. Paths below are relative to it.
 - Projects and tasks: add or update the project's row in `projects/README.md` and its file in `projects/`. Edit only the projects your session owns.
 - Open items, meaning actions, decisions, questions and risks waiting on me: add them to `dashboard/open-items.json`, and remove them when they are resolved.
 - Change nothing else in that repo, and don't commit there. If `ListAgents` shows a session named `personal-dashboard`, you may send it the change with SendMessage instead.
