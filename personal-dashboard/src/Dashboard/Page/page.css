@@ -116,8 +116,8 @@ body.flash::after {
   .lane.collapsed .lane-toggle { writing-mode: horizontal-tb; margin: 2px; }
 }
 
-.list-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto; gap: 12px; align-items: baseline; }
-.row-title { font-weight: 600; }
+#panels .list-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: baseline; padding: 4px 0; }
+.row-title { font-weight: 600; font-size: 14px; }
 .list-row .muted { font-size: 12px; }
-.row-status { color: var(--muted); font-size: 13px; text-align: center; }
+.row-status { color: var(--muted); font-size: 13px; white-space: nowrap; }
 .row-when { font-size: 13px; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }

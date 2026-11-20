@@ -289,6 +289,7 @@ Each project takes one of the theme's 10 colours, cycled by its position in the 
   - Middle: the status.
   - Right: the date as "Tue 11/24", followed by " 2:00 PM" when there is a time.
   - Title, subtitle and status allow inline Markdown.
+  - Rows are compact: 4px above and below, and the status and date never wrap, so a row with a short title and no subtitle takes one line.
 - **Order:** by date, then time. Rows without a valid date come last, in file order.
 
 ## 7. Generator
