@@ -23,7 +23,7 @@ body {
 }
 .strip-cell { flex: 1 1 0; min-width: 0; padding: 3px 2px; text-align: center; font-size: 10px; line-height: 1.25; color: #1f2620; display: flex; align-items: center; justify-content: center; }
 .weather { display: flex; }
-.weather-place { flex: 1 1 0; min-width: 0; padding: 8px 16px; background-repeat: no-repeat; background-position: right 3% center; background-size: auto 115%; font-size: 17px; text-align: center; color: #1f2620; font-variant-numeric: tabular-nums; }
+.weather-place { flex: 1 1 0; min-width: 0; padding: 8px 16px; background-repeat: no-repeat; background-position: center; background-size: cover; font-size: 17px; text-align: center; color: #1f2620; font-variant-numeric: tabular-nums; }
 h1 { font-family: var(--heading-font); font-size: 24px; margin: 0; }
 .generated { color: var(--muted); margin: 4px 0 16px; }
 a { color: var(--accent); text-decoration: none; }
