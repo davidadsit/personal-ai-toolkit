@@ -1,3 +1,4 @@
+using PersonalDashboard.Weather;
 namespace PersonalDashboard.Page;
 
 public static class PageAssets
@@ -8,8 +9,22 @@ public static class PageAssets
 
     public static string Script { get; } = Read("page.js");
 
-    public static string FaviconDataUri { get; } =
-        "data:image/svg+xml;base64," + Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(Read("favicon.svg")));
+    public static string FaviconDataUri { get; } = SvgDataUri("favicon.svg");
+
+    public static string? WeatherPictureDataUri(WeatherPicture picture) => picture switch
+    {
+        WeatherPicture.Sun => SvgDataUri("weather/sun.svg"),
+        WeatherPicture.PartSun => SvgDataUri("weather/part-sun.svg"),
+        WeatherPicture.Cloud => SvgDataUri("weather/cloud.svg"),
+        WeatherPicture.Fog => SvgDataUri("weather/fog.svg"),
+        WeatherPicture.Rain => SvgDataUri("weather/rain.svg"),
+        WeatherPicture.Snow => SvgDataUri("weather/snow.svg"),
+        WeatherPicture.Storm => SvgDataUri("weather/storm.svg"),
+        _ => null,
+    };
+
+    private static string SvgDataUri(string name) =>
+        "data:image/svg+xml;base64," + Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(Read(name)));
 
     public static string Theme(string name)
     {

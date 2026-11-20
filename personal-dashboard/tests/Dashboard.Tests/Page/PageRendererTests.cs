@@ -172,10 +172,32 @@ public class PageRendererTests
 
         var banner = Banner(Render(weather: TwoTowns, weatherFeed: feed));
 
-        Assert.Contains("<span class=\"weather-place\" style=\"background: rgb(", banner);
+        Assert.Contains("<span class=\"weather-place\" style=\"background-color: rgb(", banner);
         Assert.Contains("<strong>Springfield</strong> 41°F Clear · H 48° L 29°", banner);
         Assert.Contains("<strong>Shelbyville</strong> 68°F Rain · H 70° L 50°", banner);
         Assert.DoesNotContain("strip-cell", banner);
+    }
+
+    [Fact]
+    public void Each_place_shows_a_picture_of_its_weather_behind_the_text()
+    {
+        var feed = new WeatherFeed("2026-11-18 08:00", [new PlaceWeather("Springfield", 41, 48, 29, 75), new PlaceWeather("Shelbyville", 41, 48, 29, 42)]);
+
+        var places = Regex.Matches(Banner(Render(weather: TwoTowns, weatherFeed: feed)), "<span class=\"weather-place\" style=\"([^\"]*)\"").Select(match => match.Groups[1].Value).ToList();
+
+        Assert.Contains("background-image: url(data:image/svg+xml;base64,", places[0]);
+        Assert.DoesNotContain("background-image", places[1]);
+    }
+
+    [Fact]
+    public void Conversion_strip_marks_each_place_at_its_current_temperature()
+    {
+        var feed = new WeatherFeed("2026-11-18 08:00", [new PlaceWeather("Springfield", 41, 48, 29, 0), new PlaceWeather("Frostbite Falls", -76, -70, -80, 0)]);
+
+        var banner = Banner(Render(weather: TwoTowns with { ConversionStrip = true }, weatherFeed: feed));
+
+        Assert.Contains("<span class=\"strip-marker\" style=\"left: 55.9%\" title=\"Springfield 41°F\">S</span>", banner);
+        Assert.Contains("<span class=\"strip-marker\" style=\"left: 0%\" title=\"Frostbite Falls −76°F\">F</span>", banner);
     }
 
     [Fact]

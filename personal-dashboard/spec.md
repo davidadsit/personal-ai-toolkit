@@ -323,7 +323,8 @@ Each project takes one of the theme's 10 colours, cycled by its position in the 
 - **Conversion strip:** one rounded bar of 17 cells, −40°C to 40°C in steps of 5, each labelled like "−40°C / −40°F" and coloured by its temperature.
 - **Places:** one full-width pill with a large segment per place in the weather feed, sharing the width equally with no gaps, and stacked on narrow windows, such as "**Springfield, IL** 41°F Clear · H 48° L 29°", coloured by the current temperature. When places are configured but the feed is missing: "Weather: no data yet. Run /dashboard."
 - **Colour scale:** from rgb(140, 175, 250) at −40°C and below, through white at 20°C, to rgb(242, 130, 115) at 40°C and above, mixed linearly. Text on the strip and chips stays dark in both colour schemes.
-- **Conditions:** 0 Clear, 1–2 Partly cloudy, 3 Cloudy, 45 and 48 Fog, 51–57 Drizzle, 61–67 Rain, 71–77 Snow, 80–82 Showers, 85–86 Snow showers, 95–99 Thunderstorm. Any other code shows no condition.
+- **Conditions and pictures:** 0 Clear (sun), 1–2 Partly cloudy (sun behind a cloud), 3 Cloudy (cloud), 45 and 48 Fog (fog lines), 51–57 Drizzle (rain), 61–67 Rain (rain), 71–77 Snow (snow), 80–82 Showers (rain), 85–86 Snow showers (snow), 95–99 Thunderstorm (storm). Any other code shows no condition and no picture. Each picture is a faint inline SVG at the right of the place's block, behind the text.
+- **Markers:** with the strip on, each place has a round dark marker with its first letter, on the line between the places and the strip, at its current temperature on the strip's scale. The scale runs from −42.5°C at the left edge to 42.5°C at the right, and colder or hotter temperatures sit at the edge. Hovering shows the place and temperature.
 
 ## 7. Generator
 
@@ -427,4 +428,4 @@ Each check becomes a test. Dates assume today is Wednesday 2026-11-18 unless sta
 23. A feed name that is invalid, reserved or declared twice stops generation with an error.
 24. A row whose `icon` has a saved image shows it inline as a data URI before the title. A missing image or an icon name that isn't a domain shows no icon and reads no file.
 25. Weather: only the first 5 configured places are fetched, the request asks Open-Meteo for °F in the configured time zone, and a failed request keeps the previous feed.
-26. The weather banner shows each place as "**Name** 41°F Clear · H 48° L 29°" coloured by temperature, and "Weather: no data yet. Run /dashboard." without a feed. With the strip on, it shows 17 cells from "−40°C / −40°F" to "40°C / 104°F". With no places and the strip off, there is no banner.
+26. The weather banner shows each place as "**Name** 41°F Clear · H 48° L 29°" coloured by temperature, and "Weather: no data yet. Run /dashboard." without a feed. With the strip on, it shows 17 cells from "−40°C / −40°F" to "40°C / 104°F", and a marker per place: 41°F sits at 55.9% and −76°F at 0%. A known weather code adds its picture, and an unknown one adds none. With no places and the strip off, there is no banner.

@@ -20,4 +20,21 @@ public class WeatherConditionTests
     {
         Assert.Equal(name, WeatherCondition.Name(code));
     }
+
+    [Theory]
+    [InlineData(0, WeatherPicture.Sun)]
+    [InlineData(1, WeatherPicture.PartSun)]
+    [InlineData(3, WeatherPicture.Cloud)]
+    [InlineData(48, WeatherPicture.Fog)]
+    [InlineData(55, WeatherPicture.Rain)]
+    [InlineData(65, WeatherPicture.Rain)]
+    [InlineData(82, WeatherPicture.Rain)]
+    [InlineData(73, WeatherPicture.Snow)]
+    [InlineData(85, WeatherPicture.Snow)]
+    [InlineData(99, WeatherPicture.Storm)]
+    [InlineData(42, WeatherPicture.None)]
+    public void Pictures_the_weather_code(int code, WeatherPicture picture)
+    {
+        Assert.Equal(picture, WeatherCondition.Picture(code));
+    }
 }
