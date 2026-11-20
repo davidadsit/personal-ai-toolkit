@@ -23,10 +23,13 @@ public class PageRendererTests
         EmailsFeed? emails = null,
         OpenItemsFeed? openItems = null,
         string theme = "default",
-        IReadOnlyList<ListPanel>? listPanels = null)
+        IReadOnlyList<ListPanel>? listPanels = null,
+        WeatherSettings? weather = null,
+        WeatherFeed? weatherFeed = null)
     {
         plans ??= [];
-        var snapshot = new WorkspaceSnapshot(new DashboardSettings { Theme = theme }, plans, meetings, emails, openItems, listPanels ?? []);
+        var settings = new DashboardSettings { Theme = theme, Weather = weather ?? new WeatherSettings() };
+        var snapshot = new WorkspaceSnapshot(settings, plans, meetings, emails, openItems, listPanels ?? [], weatherFeed);
         return PageRenderer.Render(new PageContent(snapshot, Builder.Build(plans, Today), GeneratedAt));
     }
 
@@ -134,6 +137,51 @@ public class PageRendererTests
         Assert.Contains("<a href=\"https://example.com/track/1\" target=\"_blank\" rel=\"noopener\">Tracked</a>", panel);
         Assert.Contains("<div class=\"row-title\">Untracked</div>", panel);
         Assert.DoesNotContain("javascript:", panel);
+    }
+
+    private static readonly WeatherSettings TwoTowns = new()
+    {
+        Places = [new WeatherPlace("Springfield", 39.8, -89.65), new WeatherPlace("Shelbyville", 39.4, -88.8)],
+    };
+
+    private static string Banner(string page) =>
+        Regex.Match(page, "<header id=\"banner\".*?</header>", RegexOptions.Singleline).Value;
+
+    [Fact]
+    public void No_banner_without_weather_places_or_conversion_strip()
+    {
+        Assert.DoesNotContain("id=\"banner\"", Render());
+    }
+
+    [Fact]
+    public void Conversion_strip_shows_celsius_and_fahrenheit_from_minus_40_to_40_in_steps_of_5()
+    {
+        var banner = Banner(Render(weather: new WeatherSettings { ConversionStrip = true }));
+
+        var cells = Regex.Matches(banner, "<span class=\"strip-cell\" style=\"background: [^\"]+\">(.*?)</span>").Select(match => match.Groups[1].Value).ToList();
+        Assert.Equal(17, cells.Count);
+        Assert.Equal("−40°C / −40°F", cells[0]);
+        Assert.Equal("0°C / 32°F", cells[8]);
+        Assert.Equal("40°C / 104°F", cells[16]);
+    }
+
+    [Fact]
+    public void Weather_shows_each_place_with_temperature_condition_and_todays_range_tinted_by_temperature()
+    {
+        var feed = new WeatherFeed("2026-11-18 08:00", [new PlaceWeather("Springfield", 41.4, 48.1, 29.3, 0), new PlaceWeather("Shelbyville", 68, 70, 50, 63)]);
+
+        var banner = Banner(Render(weather: TwoTowns, weatherFeed: feed));
+
+        Assert.Contains("<span class=\"weather-place\" style=\"background: rgb(", banner);
+        Assert.Contains("<strong>Springfield</strong> 41°F Clear · H 48° L 29°", banner);
+        Assert.Contains("<strong>Shelbyville</strong> 68°F Rain · H 70° L 50°", banner);
+        Assert.DoesNotContain("strip-cell", banner);
+    }
+
+    [Fact]
+    public void Weather_without_a_feed_asks_for_a_refresh()
+    {
+        Assert.Contains("Weather: no data yet. Run /dashboard.", Banner(Render(weather: TwoTowns)));
     }
 
     [Fact]

@@ -12,6 +12,7 @@ public sealed class WorkspacePaths(string root)
     public string Emails => Path.Combine(Output, "emails.json");
     public string OpenItems => Path.Combine(Output, "open-items.json");
     public string ListPanelFeed(string feed) => Path.Combine(Output, feed + ".json");
+    public string Weather => Path.Combine(Output, "weather.json");
     public string Icons => Path.Combine(Output, "icons");
     public string ArchiveQueue => Path.Combine(Output, "archive-queue.json");
     public string ArchiveQueueLock => Path.Combine(Output, "archive-queue.lock");

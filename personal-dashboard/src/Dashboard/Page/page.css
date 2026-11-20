@@ -7,11 +7,17 @@ body {
   font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
   display: grid;
   grid-template-columns: minmax(0, 1fr) max(360px, 26%);
+  grid-template-rows: auto minmax(0, 1fr);
   height: 100vh;
   overflow: hidden;
 }
-#work { overflow: auto; padding: 18px 20px; }
-#panels { overflow: auto; padding: 18px 16px 18px 4px; }
+#banner { grid-column: 1 / -1; grid-row: 1; padding: 10px 16px 0 20px; display: grid; gap: 6px; }
+#work { grid-column: 1; grid-row: 2; overflow: auto; padding: 18px 20px; }
+#panels { grid-column: 2; grid-row: 2; overflow: auto; padding: 18px 16px 18px 4px; }
+.conversion-strip { display: flex; border-radius: 999px; overflow: hidden; border: 1px solid var(--border); }
+.strip-cell { flex: 1 1 0; min-width: 0; padding: 3px 2px; text-align: center; font-size: 10px; color: #1f2620; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.weather { display: flex; flex-wrap: wrap; gap: 8px; }
+.weather-place { padding: 3px 10px; border-radius: 999px; font-size: 13px; color: #1f2620; border: 1px solid var(--border); font-variant-numeric: tabular-nums; }
 h1 { font-family: var(--heading-font); font-size: 24px; margin: 0; }
 .generated { color: var(--muted); margin: 4px 0 16px; }
 a { color: var(--accent); text-decoration: none; }
@@ -108,6 +114,9 @@ body.flash::after {
 
 @media (max-width: 959px) {
   body { display: block; height: auto; overflow: visible; }
+  #banner { padding: 10px 16px 0; }
+  .conversion-strip { overflow-x: auto; }
+  .strip-cell { flex: 0 0 auto; padding: 3px 8px; }
   #work, #panels { overflow: visible; padding: 16px; }
 }
 @media (max-width: 759px) {

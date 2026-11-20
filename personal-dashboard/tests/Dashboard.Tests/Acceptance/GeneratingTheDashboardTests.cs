@@ -99,6 +99,20 @@ public sealed class GeneratingTheDashboardTests : IDisposable
     }
 
     [Fact]
+    public void Weather_banner_shows_the_saved_weather_and_the_conversion_strip_above_the_dashboard()
+    {
+        WriteFile("dashboard.json", """{ "timeZone": "America/Denver", "weather": { "conversionStrip": true, "places": [ { "name": "Springfield", "latitude": 39.8, "longitude": -89.65 } ] } }""");
+        WriteFile("dashboard/weather.json", """{ "refreshed": "2026-11-18 08:00", "places": [ { "name": "Springfield", "temperature": 41.2, "high": 48.1, "low": 29.3, "code": 0 } ] }""");
+
+        var page = GeneratePage();
+
+        var banner = page.IndexOf("<header id=\"banner\">", StringComparison.Ordinal);
+        Assert.InRange(banner, 0, page.IndexOf("<main id=\"work\">", StringComparison.Ordinal));
+        Assert.Contains("<strong>Springfield</strong> 41°F Clear · H 48° L 29°", page);
+        Assert.Contains("0°C / 32°F", page);
+    }
+
+    [Fact]
     public void A_reserved_list_panel_feed_name_stops_generation()
     {
         WriteFile("dashboard.json", """{ "panels": [ { "feed": "emails", "title": "Mail again" } ] }""");

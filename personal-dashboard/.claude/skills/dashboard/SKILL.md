@@ -1,6 +1,6 @@
 ---
 name: dashboard
-description: Refresh the personal dashboard. Archives queued emails, pulls today's meetings from Google Calendar and the emails that need attention from Gmail, fills any list panels declared in dashboard.json, writes the feeds in dashboard/, and regenerates the page.
+description: Refresh the personal dashboard. Archives queued emails, pulls today's meetings from Google Calendar and the emails that need attention from Gmail, fills any list panels declared in dashboard.json, refreshes the weather, writes the feeds in dashboard/, and regenerates the page.
 ---
 
 # Refresh the dashboard
@@ -61,7 +61,11 @@ For each entry in the `panels` array of `dashboard.json`, if there is one:
 
 The page groups rows by date and sorts them by time, so write them in any order.
 
-## 4. Regenerate
+## 4. Weather
+
+Run `scripts/dashboard weather`. It fetches the weather for the places in `dashboard.json` and writes `dashboard/weather.json`. If it fails, it keeps the previous weather. Mention the failure in your report.
+
+## 5. Regenerate
 
 Run `scripts/dashboard`. Report the number of meetings, the number of critical meetings, the number of emails and the number of rows in each list panel, plus anything a message asked you to do.
 

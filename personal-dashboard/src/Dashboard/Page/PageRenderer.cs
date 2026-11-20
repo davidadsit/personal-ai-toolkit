@@ -23,6 +23,7 @@ public static class PageRenderer
             </style>
             </head>
             <body data-reload-seconds="{settings.ReloadSeconds}">
+            {WeatherBanner.Render(settings.Weather, content.Snapshot.Weather)}
             <main id="work">
             <h1>Dashboard</h1>
             <p class="generated">Generated {generated} {Encode(settings.TimeZoneLabel)}. It reloads every {settings.ReloadSeconds} seconds.</p>

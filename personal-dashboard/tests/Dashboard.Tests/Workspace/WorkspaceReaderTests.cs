@@ -70,6 +70,19 @@ public sealed class WorkspaceReaderTests : IDisposable
     }
 
     [Fact]
+    public void Reads_weather_settings_and_the_weather_feed()
+    {
+        WriteFile("dashboard.json", """{ "weather": { "conversionStrip": true, "places": [ { "name": "Springfield", "latitude": 39.8, "longitude": -89.65 } ] } }""");
+        WriteFile("dashboard/weather.json", """{ "refreshed": "2026-11-17 08:05", "places": [ { "name": "Springfield", "temperature": 41.2, "high": 48.1, "low": 29.3, "code": 0 } ] }""");
+
+        var snapshot = new WorkspaceReader(root).Read();
+
+        Assert.True(snapshot.Settings.Weather.ConversionStrip);
+        Assert.Equal(new WeatherPlace("Springfield", 39.8, -89.65), snapshot.Settings.Weather.Places.Single());
+        Assert.Equal(41.2, snapshot.Weather!.Places.Single().Temperature);
+    }
+
+    [Fact]
     public void Reads_the_feed_of_each_declared_list_panel()
     {
         WriteFile("dashboard.json", """{ "panels": [ { "feed": "parcels", "title": "Parcels", "instructions": "Find shipping mail." }, { "feed": "library-holds", "title": "Library holds" } ] }""");

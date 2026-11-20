@@ -9,4 +9,5 @@ public sealed record WorkspaceSnapshot(
     MeetingsFeed? Meetings,
     EmailsFeed? Emails,
     OpenItemsFeed? OpenItems,
-    IReadOnlyList<ListPanel> ListPanels);
+    IReadOnlyList<ListPanel> ListPanels,
+    WeatherFeed? Weather);

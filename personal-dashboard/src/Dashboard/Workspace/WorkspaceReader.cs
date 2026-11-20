@@ -17,7 +17,8 @@ public sealed class WorkspaceReader(string root)
             FeedJson.ReadIfExists<MeetingsFeed>(paths.Meetings),
             FeedJson.ReadIfExists<EmailsFeed>(paths.Emails),
             FeedJson.ReadIfExists<OpenItemsFeed>(paths.OpenItems),
-            ReadListPanels(settings.Panels));
+            ReadListPanels(settings.Panels),
+            FeedJson.ReadIfExists<WeatherFeed>(paths.Weather));
     }
 
     private IReadOnlyList<ListPanel> ReadListPanels(IReadOnlyList<ListPanelSettings> panels)
