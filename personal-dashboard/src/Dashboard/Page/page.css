@@ -15,7 +15,7 @@ body {
 #work { grid-column: 1; grid-row: 2; overflow: auto; padding: 18px 20px; }
 #panels { grid-column: 2; grid-row: 2; overflow: auto; padding: 18px 16px 18px 4px; }
 .conversion-strip { display: flex; border-radius: 999px; overflow: hidden; border: 1px solid var(--border); }
-.strip-cell { flex: 1 1 0; min-width: 0; padding: 3px 2px; text-align: center; font-size: 10px; color: #1f2620; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.strip-cell { flex: 1 1 0; min-width: 0; padding: 3px 2px; text-align: center; font-size: 10px; line-height: 1.25; color: #1f2620; display: flex; align-items: center; justify-content: center; }
 .weather { display: flex; flex-wrap: wrap; gap: 8px; }
 .weather-place { padding: 3px 10px; border-radius: 999px; font-size: 13px; color: #1f2620; border: 1px solid var(--border); font-variant-numeric: tabular-nums; }
 h1 { font-family: var(--heading-font); font-size: 24px; margin: 0; }
