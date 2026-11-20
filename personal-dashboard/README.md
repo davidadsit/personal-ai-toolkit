@@ -8,7 +8,7 @@ A local page with a kanban board built from `projects/`, today's meetings, email
 - Set `"theme"` in `dashboard.json` to `default`, `autumn` or `christmas` to change the look.
 - `scripts/dashboard serve` also serves it on `http://127.0.0.1:8771/` so emails can be archived from the page.
 - `/dashboard` in Claude Code refreshes meetings and emails.
-- `scripts/install-scheduler.sh` installs a launchd agent that runs `/dashboard` hourly from 8:00 to 17:00 on weekdays. Output goes to `dashboard/refresh.log`.
+- `scripts/install-scheduler.sh` installs a launchd agent that runs `/dashboard` every half hour from 8:00 to 17:30 on weekdays. Output goes to `dashboard/refresh.log`.
 
 Project hooks in `.claude/settings.json` regenerate the page after every turn, ask Claude to archive queued emails, and start and stop the server with the session.
 

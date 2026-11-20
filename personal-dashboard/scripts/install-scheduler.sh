@@ -8,7 +8,9 @@ plist="$HOME/Library/LaunchAgents/$label.plist"
 intervals=""
 for weekday in 1 2 3 4 5; do
   for hour in 8 9 10 11 12 13 14 15 16 17; do
-    intervals="$intervals<dict><key>Weekday</key><integer>$weekday</integer><key>Hour</key><integer>$hour</integer><key>Minute</key><integer>0</integer></dict>"
+    for minute in 0 30; do
+      intervals="$intervals<dict><key>Weekday</key><integer>$weekday</integer><key>Hour</key><integer>$hour</integer><key>Minute</key><integer>$minute</integer></dict>"
+    done
   done
 done
 

@@ -306,7 +306,7 @@ Rules:
 
 ### 9.3 Scheduled refresh (optional)
 
-On weekdays during working hours, run Claude non-interactively with `/dashboard`, then the generator. Restrict it:
+Every half hour from 8:00 to 17:30 on weekdays, run Claude non-interactively with `/dashboard`, then the generator. Restrict it:
 - Hooks disabled.
 - Permission prompts off.
 - Only these tools allowed: read and search, edits inside `dashboard/`, Calendar list events, and Gmail search, get thread and remove label.
