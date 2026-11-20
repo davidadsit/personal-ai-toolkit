@@ -31,7 +31,7 @@ public static class PageAssets
         var resource = ThemePrefix + name + ".css";
         if (!AvailableThemes().Contains(name))
         {
-            throw new InvalidOperationException($"Unknown theme '{name}'. Available themes: {string.Join(", ", AvailableThemes())}.");
+            throw new InvalidOperationException($"Unknown theme '{name}'. Available themes: {string.Join(", ", AvailableThemes())}, or a themes/{name}.css file in the workspace.");
         }
         return Read(resource);
     }

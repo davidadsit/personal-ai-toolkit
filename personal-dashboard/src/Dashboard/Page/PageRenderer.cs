@@ -18,7 +18,7 @@ public static class PageRenderer
             <title>Dashboard</title>
             <link rel="icon" type="image/svg+xml" href="{PageAssets.FaviconDataUri}">
             <style>
-            {PageAssets.Theme(settings.Theme)}
+            {settings.WorkspaceThemeCss ?? PageAssets.Theme(settings.Theme)}
             {PageAssets.Styles}
             </style>
             </head>

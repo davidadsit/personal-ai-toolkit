@@ -5,7 +5,7 @@ A local page with a kanban board built from `projects/`, today's meetings, email
 ## Use
 
 - `scripts/dashboard` regenerates `dashboard/index.html`.
-- Set `"theme"` in `dashboard.json` to `default`, `autumn` or `christmas` to change the look.
+- Set `"theme"` in `dashboard.json` to `default`, `autumn` or `christmas` to change the look, or to the name of your own `themes/<name>.css` in the workspace. Copy a built-in theme to start one: it must define every token the built-in themes define.
 - `scripts/dashboard serve` also serves it on `http://127.0.0.1:8771/` so emails can be archived from the page.
 - `/dashboard` in Claude Code refreshes meetings and emails.
 - Add a weather banner with `"weather"` in `dashboard.json`: up to 5 places with name, latitude and longitude, and `"conversionStrip": true` for a °C/°F strip. `scripts/dashboard weather` fetches it from Open-Meteo. See spec section 6.8.

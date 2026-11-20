@@ -17,4 +17,5 @@ public sealed class WorkspacePaths(string root)
     public string ArchiveQueue => Path.Combine(Output, "archive-queue.json");
     public string ArchiveQueueLock => Path.Combine(Output, "archive-queue.lock");
     public string ServerPid => Path.Combine(Output, "server.pid");
+    public string Theme(string name) => Path.Combine(root, "themes", name + ".css");
 }

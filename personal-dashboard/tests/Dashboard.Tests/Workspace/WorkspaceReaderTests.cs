@@ -29,6 +29,34 @@ public sealed class WorkspaceReaderTests : IDisposable
     }
 
     [Fact]
+    public void Reads_a_theme_from_the_workspace_themes_folder()
+    {
+        WriteFile("dashboard.json", """{ "theme": "company" }""");
+        WriteFile("themes/company.css", ":root { --accent: #0e7bfb; }");
+
+        var settings = new WorkspaceReader(root).Read().Settings;
+
+        Assert.Equal(":root { --accent: #0e7bfb; }", settings.WorkspaceThemeCss);
+    }
+
+    [Fact]
+    public void Built_in_theme_name_without_a_workspace_file_reads_no_workspace_theme()
+    {
+        WriteFile("dashboard.json", """{ "theme": "autumn" }""");
+
+        Assert.Null(new WorkspaceReader(root).Read().Settings.WorkspaceThemeCss);
+    }
+
+    [Fact]
+    public void Theme_name_with_a_path_is_not_read_from_the_workspace()
+    {
+        WriteFile("dashboard.json", """{ "theme": "../secret" }""");
+        WriteFile("secret.css", ":root {}");
+
+        Assert.Null(new WorkspaceReader(root).Read().Settings.WorkspaceThemeCss);
+    }
+
+    [Fact]
     public void Reads_settings_and_ignores_skill_rules()
     {
         WriteFile("dashboard.json", """{ "timeZone": "America/New_York", "timeZoneLabel": "ET", "port": 9000, "theme": "autumn", "keyPeople": ["Sam"] }""");

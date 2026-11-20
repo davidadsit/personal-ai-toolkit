@@ -25,10 +25,11 @@ public class PageRendererTests
         string theme = "default",
         IReadOnlyList<ListPanel>? listPanels = null,
         WeatherSettings? weather = null,
-        WeatherFeed? weatherFeed = null)
+        WeatherFeed? weatherFeed = null,
+        string? workspaceThemeCss = null)
     {
         plans ??= [];
-        var settings = new DashboardSettings { Theme = theme, Weather = weather ?? new WeatherSettings() };
+        var settings = new DashboardSettings { Theme = theme, Weather = weather ?? new WeatherSettings(), WorkspaceThemeCss = workspaceThemeCss };
         var snapshot = new WorkspaceSnapshot(settings, plans, meetings, emails, openItems, listPanels ?? [], weatherFeed);
         return PageRenderer.Render(new PageContent(snapshot, Builder.Build(plans, Today), GeneratedAt));
     }
@@ -437,6 +438,15 @@ public class PageRendererTests
     public void Default_theme_keeps_the_original_project_hues()
     {
         Assert.Contains("--project-hue-0: 210;", Render());
+    }
+
+    [Fact]
+    public void Workspace_theme_replaces_the_built_in_theme()
+    {
+        var html = Render(theme: "company", workspaceThemeCss: ":root { --project-hue-0: 214; }");
+
+        Assert.Contains("--project-hue-0: 214;", html);
+        Assert.DoesNotContain("--project-hue-0: 210;", html);
     }
 
     [Fact]

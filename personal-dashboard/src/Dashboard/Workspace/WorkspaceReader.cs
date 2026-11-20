@@ -11,6 +11,7 @@ public sealed class WorkspaceReader(string root)
     public WorkspaceSnapshot Read()
     {
         var settings = FeedJson.ReadIfExists<DashboardSettings>(paths.Settings) ?? new DashboardSettings();
+        settings = settings with { WorkspaceThemeCss = ReadWorkspaceTheme(settings.Theme) };
         return new(
             settings,
             ReadPlans(),
@@ -20,6 +21,18 @@ public sealed class WorkspaceReader(string root)
             ReadListPanels(settings.Panels),
             FeedJson.ReadIfExists<WeatherFeed>(paths.Weather));
     }
+
+    private string? ReadWorkspaceTheme(string name)
+    {
+        if (!ThemeName.IsMatch(name))
+        {
+            return null;
+        }
+        var file = paths.Theme(name);
+        return File.Exists(file) ? File.ReadAllText(file) : null;
+    }
+
+    private static readonly System.Text.RegularExpressions.Regex ThemeName = new("^[a-z][a-z0-9-]*$");
 
     private IReadOnlyList<ListPanel> ReadListPanels(IReadOnlyList<ListPanelSettings> panels)
     {
