@@ -94,8 +94,8 @@ public sealed class GeneratingTheDashboardTests : IDisposable
         var parcels = page.IndexOf("<h2 class=\"label\">Parcels</h2>", StringComparison.Ordinal);
         Assert.InRange(parcels, page.IndexOf("Meetings today", StringComparison.Ordinal), page.IndexOf("Emails to address", StringComparison.Ordinal));
         Assert.True(page.IndexOf("Garden hose", StringComparison.Ordinal) < page.IndexOf("Paint rollers", StringComparison.Ordinal));
-        Assert.Contains("Wed 11/18", page);
-        Assert.Contains("Tue 11/24", page);
+        Assert.Contains("<h3 class=\"row-date\">Wed 11/18</h3>", page);
+        Assert.Contains("<h3 class=\"row-date\">Tue 11/24</h3>", page);
     }
 
     [Fact]

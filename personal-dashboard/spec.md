@@ -167,10 +167,10 @@ The server writes it, and the skill or a hook empties it. Every writer holds the
 ```json
 { "refreshed": "2026-11-17 08:05",
   "rows": [
-    { "title": "Garden hose", "subtitle": "Hardware store · Order 1001", "status": "Shipped", "date": "2026-11-20", "time": "", "link": "https://example.com/track/1001" } ] }
+    { "title": "Garden hose", "subtitle": "Hardware store · Order 1001", "status": "Shipped", "date": "2026-11-20", "time": "", "link": "https://example.com/track/1001", "icon": "example.com" } ] }
 ```
 
-Only `title` is required. `date` is `YYYY-MM-DD` and `time` is `HH:mm`.
+Only `title` is required. `date` is `YYYY-MM-DD` and `time` is `HH:mm`. `icon` names the vendor's domain. Its image is `dashboard/icons/<domain>.svg`, `.png` or `.ico`, saved by the skill, and the generator inlines it as a data URI. A domain that doesn't match `^[a-z0-9][a-z0-9-]*(\.[a-z0-9-]+)+$`, or has no saved image, shows no icon.
 
 Any feed file may be missing. The page then shows the empty state for that panel (section 6).
 
@@ -284,13 +284,14 @@ Each project takes one of the theme's 10 colours, cycled by its position in the 
   - The feed file is missing: "No data yet. Run /dashboard."
   - The file exists: "Refreshed YYYY-MM-DD h:mm AM" under the heading.
   - The list is empty: "Nothing to show."
+- **Groups:** rows are grouped by date under a small heading such as "Tue 11/24". Rows without a valid date go under "No date", last.
 - **Each row:**
-  - Left: the title, a link opening a new tab when `link` starts with `https://`, with the subtitle muted below it.
+  - Left: the vendor icon when there is one, then the title, a link opening a new tab when `link` starts with `https://`, with the subtitle muted below it.
   - Middle: the status.
-  - Right: the date as "Tue 11/24", followed by " 2:00 PM" when there is a time.
+  - Right: the time as "2:00 PM" when there is one.
   - Title, subtitle and status allow inline Markdown.
   - Rows are compact: 4px above and below, and the status and date never wrap, so a row with a short title and no subtitle takes one line.
-- **Order:** by date, then time. Rows without a valid date come last, in file order.
+- **Order:** within a group, by time, then file order.
 
 ## 7. Generator
 
@@ -387,5 +388,6 @@ Each check becomes a test. Dates assume today is Wednesday 2026-11-18 unless sta
 19. The generated page contains no network references other than the links in the data and the configured calendar URL, in every theme. The SVG namespace in a theme's inline background image is an identifier, not a reference.
 20. A declared list panel renders between Meetings today and Emails to address, with its title as the heading.
 21. A list panel with a missing feed shows "No data yet. Run /dashboard.", and one with no rows shows "Nothing to show."
-22. List panel rows sort by date, then time, with undated rows last. A row whose link doesn't start with `https://` renders its title as plain text. A row dated 2026-11-24 at 14:00 shows "Tue 11/24 2:00 PM".
+22. List panel rows group under date headings in date order, sort by time within a date, and undated rows come last under "No date". A row whose link doesn't start with `https://` renders its title as plain text. A row dated 2026-11-24 at 14:00 sits under "Tue 11/24" and shows "2:00 PM".
 23. A feed name that is invalid, reserved or declared twice stops generation with an error.
+24. A row whose `icon` has a saved image shows it inline as a data URI before the title. A missing image or an icon name that isn't a domain shows no icon and reads no file.

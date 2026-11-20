@@ -23,9 +23,12 @@ public sealed class WorkspaceReader(string root)
     private IReadOnlyList<ListPanel> ReadListPanels(IReadOnlyList<ListPanelSettings> panels)
     {
         FeedNames.EnsureValid(panels);
-        return panels
-            .Select(panel => new ListPanel(panel, FeedJson.ReadIfExists<ListPanelFeed>(paths.ListPanelFeed(panel.Feed))))
-            .ToList();
+        var icons = new VendorIcons(paths.Icons);
+        return panels.Select(panel =>
+        {
+            var feed = FeedJson.ReadIfExists<ListPanelFeed>(paths.ListPanelFeed(panel.Feed));
+            return new ListPanel(panel, feed, icons.For(feed));
+        }).ToList();
     }
 
     private IReadOnlyList<ProjectPlan> ReadPlans()

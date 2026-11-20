@@ -121,3 +121,6 @@ body.flash::after {
 .list-row .muted { font-size: 12px; }
 .row-status { color: var(--muted); font-size: 13px; white-space: nowrap; }
 .row-when { font-size: 13px; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.row-date { margin: 10px 0 2px; font-size: 12px; font-weight: 600; color: var(--label); }
+.list-panel .refreshed + .row-date { margin-top: 0; }
+.row-icon { width: 16px; height: 16px; margin-right: 6px; vertical-align: -3px; }

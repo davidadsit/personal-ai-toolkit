@@ -83,6 +83,20 @@ public sealed class WorkspaceReaderTests : IDisposable
         Assert.Null(panels[1].Feed);
     }
 
+    [Fact]
+    public void Reads_the_saved_icon_of_each_row_vendor_as_a_data_uri()
+    {
+        WriteFile("dashboard.json", """{ "panels": [ { "feed": "parcels", "title": "Parcels" } ] }""");
+        WriteFile("dashboard/parcels.json", """{ "refreshed": "2026-11-17 08:05", "rows": [ { "title": "Hose", "icon": "example.com" }, { "title": "Rake", "icon": "unsaved.example" }, { "title": "Trap", "icon": "../secrets" } ] }""");
+        WriteFile("dashboard/icons/example.com.png", "png bytes");
+        WriteFile("secrets.png", "private");
+
+        var icons = new WorkspaceReader(root).Read().ListPanels.Single().Icons;
+
+        Assert.Equal("data:image/png;base64," + Convert.ToBase64String("png bytes"u8.ToArray()), icons["example.com"]);
+        Assert.Single(icons);
+    }
+
     [Theory]
     [InlineData("Parcels")]
     [InlineData("../secrets")]

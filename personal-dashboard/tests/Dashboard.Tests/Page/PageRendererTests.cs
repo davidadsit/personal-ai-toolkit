@@ -34,7 +34,7 @@ public class PageRendererTests
         Regex.Match(html, $"<section id=\"{id}\".*?</section>", RegexOptions.Singleline).Value;
 
     private static ListPanel Parcels(params ListPanelRow[] rows) =>
-        new(new ListPanelSettings("parcels", "Parcels"), new ListPanelFeed("2026-11-18 08:00", rows));
+        new(new ListPanelSettings("parcels", "Parcels"), new ListPanelFeed("2026-11-18 08:00", rows), new Dictionary<string, string>());
 
     private static string RenderParcels(params ListPanelRow[] rows) =>
         Section(Render(listPanels: [Parcels(rows)]), "panel-parcels");
@@ -42,7 +42,7 @@ public class PageRendererTests
     [Fact]
     public void List_panels_render_between_meetings_and_emails_in_declared_order()
     {
-        var holds = new ListPanel(new ListPanelSettings("library-holds", "Library holds"), null);
+        var holds = new ListPanel(new ListPanelSettings("library-holds", "Library holds"), null, new Dictionary<string, string>());
 
         var page = Render(listPanels: [Parcels(), holds]);
 
@@ -56,7 +56,7 @@ public class PageRendererTests
     [Fact]
     public void List_panel_without_a_feed_asks_for_a_refresh()
     {
-        var page = Render(listPanels: [new ListPanel(new ListPanelSettings("parcels", "Parcels"), null)]);
+        var page = Render(listPanels: [new ListPanel(new ListPanelSettings("parcels", "Parcels"), null, new Dictionary<string, string>())]);
 
         Assert.Contains("No data yet. Run /dashboard.", Section(page, "panel-parcels"));
     }
@@ -85,13 +85,43 @@ public class PageRendererTests
     }
 
     [Fact]
-    public void List_panel_row_shows_subtitle_status_and_short_date_with_time()
+    public void List_panel_row_shows_subtitle_status_and_time()
     {
         var panel = RenderParcels(new ListPanelRow("Garden hose", "Hardware store", "**Shipped**", "2026-11-24", "14:00"));
 
         Assert.Contains("<div class=\"muted\">Hardware store</div>", panel);
         Assert.Contains("<div class=\"row-status\"><strong>Shipped</strong></div>", panel);
-        Assert.Contains("<div class=\"row-when\">Tue 11/24 2:00 PM</div>", panel);
+        Assert.Contains("<div class=\"row-when\">2:00 PM</div>", panel);
+    }
+
+    [Fact]
+    public void List_panel_groups_rows_under_their_date_with_undated_rows_last()
+    {
+        var panel = RenderParcels(
+            new ListPanelRow("Rake"),
+            new ListPanelRow("Hose", Date: "2026-11-20"),
+            new ListPanelRow("Gloves", Date: "2026-11-24"),
+            new ListPanelRow("Seeds", Date: "2026-11-20"));
+
+        var groups = Regex.Matches(panel, "<h3 class=\"row-date\">(.*?)</h3>").Select(match => match.Groups[1].Value);
+        Assert.Equal(["Fri 11/20", "Tue 11/24", "No date"], groups);
+        var friday = Regex.Match(panel, "Fri 11/20</h3>(.*?)<h3", RegexOptions.Singleline).Value;
+        Assert.Contains("Hose", friday);
+        Assert.Contains("Seeds", friday);
+        Assert.DoesNotContain("Gloves", friday);
+    }
+
+    [Fact]
+    public void List_panel_row_shows_its_vendor_icon_before_the_title_when_saved()
+    {
+        var icons = new Dictionary<string, string> { ["example.com"] = "data:image/png;base64,AAAA" };
+        var panel = new ListPanel(new ListPanelSettings("parcels", "Parcels"), new ListPanelFeed("2026-11-18 08:00",
+            [new ListPanelRow("Hose", Icon: "example.com"), new ListPanelRow("Rake", Icon: "unsaved.example")]), icons);
+
+        var html = Section(Render(listPanels: [panel]), "panel-parcels");
+
+        Assert.Contains("<div class=\"row-title\"><img class=\"row-icon\" src=\"data:image/png;base64,AAAA\" alt=\"\">Hose</div>", html);
+        Assert.Contains("<div class=\"row-title\">Rake</div>", html);
     }
 
     [Fact]
