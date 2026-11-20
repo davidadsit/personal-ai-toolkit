@@ -283,6 +283,17 @@ public class PageRendererTests
     }
 
     [Fact]
+    public void Email_buttons_explain_what_they_do_on_hover()
+    {
+        var feed = new EmailsFeed("x", [new Email("Alex", "Quote", "2026-11-16", "Approve", "https://mail.google.com/mail/u/0/#inbox/abc", "abc")]);
+
+        var emails = Section(Render(emails: feed), "emails");
+
+        Assert.Contains("<button class=\"addressed\" title=\"Hide this email on the dashboard, in this browser only. It stays in your Gmail inbox.\">✓</button>", emails);
+        Assert.Contains("<button class=\"archive\" title=\"Archive this email in Gmail and hide it here. Gmail is updated at the next /dashboard refresh.\">Archive</button>", emails);
+    }
+
+    [Fact]
     public void Email_without_gmail_link_or_thread_is_plain_text_without_archive()
     {
         var feed = new EmailsFeed("x", [new Email("Alex", "Quote", "2026-11-16", "Approve", "https://evil.example/", "")]);

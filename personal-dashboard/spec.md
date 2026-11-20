@@ -255,8 +255,8 @@ Each project takes one of the theme's 10 colours, cycled by its position in the 
 - **Each email:**
   - The subject. It is a link when `link` starts with `https://mail.google.com/`.
   - "from · received" and the "why" line.
-  - A ✓ button.
-  - An **Archive** button when the item has a thread ID.
+  - A ✓ button, with the hover text "Hide this email on the dashboard, in this browser only. It stays in your Gmail inbox."
+  - An **Archive** button when the item has a thread ID, with the hover text "Archive this email in Gmail and hide it here. Gmail is updated at the next /dashboard refresh."
 - **✓:** hides the email in this browser only, remembered in local storage by link (or by subject when there's no link). It survives reloads and regenerations.
 - **Archive:** sends `POST /archive` with `{"thread": "<id>"}`. On success, it marks the email addressed as ✓ does.
   - When the page is opened as a file rather than from the server, Archive buttons are hidden.

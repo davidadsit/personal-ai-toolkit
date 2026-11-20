@@ -6,6 +6,8 @@ namespace PersonalDashboard.Page;
 public static class EmailsSection
 {
     private const string GmailPrefix = "https://mail.google.com/";
+    private const string AddressedHint = "Hide this email on the dashboard, in this browser only. It stays in your Gmail inbox.";
+    private const string ArchiveHint = "Archive this email in Gmail and hide it here. Gmail is updated at the next /dashboard refresh.";
 
     public static string Render(EmailsFeed? feed) => $"""
         <section id="emails">
@@ -34,7 +36,7 @@ public static class EmailsSection
             ? $"""<a href="{Encode(email.Link)}" target="_blank" rel="noopener">{Encode(email.Subject)}</a>"""
             : Encode(email.Subject);
         var key = email.Link != "" ? email.Link : email.Subject;
-        var archive = email.Thread != "" ? """<button class="archive">Archive</button>""" : "";
+        var archive = email.Thread != "" ? $"""<button class="archive" title="{ArchiveHint}">Archive</button>""" : "";
         return $"""
             <li class="email" data-key="{Encode(key)}" data-thread="{Encode(email.Thread)}">
             <div class="email-body">
@@ -42,7 +44,7 @@ public static class EmailsSection
             <div class="muted">{Encode(email.From)} · {Encode(email.Received)}</div>
             <div class="why">{Encode(email.Why)}</div>
             </div>
-            <div class="email-actions"><button class="addressed" title="Addressed">✓</button>{archive}</div>
+            <div class="email-actions"><button class="addressed" title="{AddressedHint}">✓</button>{archive}</div>
             </li>
             """;
     }
