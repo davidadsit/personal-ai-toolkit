@@ -1,6 +1,6 @@
 # Personal dashboard
 
-A local page with a kanban board built from `projects/`, today's meetings, emails that need attention, and open items. [spec.md](spec.md) describes the behaviour, and [docs/adr](docs/adr/README.md) records the decisions.
+A local page with a kanban board built from `projects/`, today's meetings, emails that need attention, open items, and any list panels you declare. [spec.md](spec.md) describes the behaviour, and [docs/adr](docs/adr/README.md) records the decisions.
 
 ## Use
 
@@ -8,6 +8,7 @@ A local page with a kanban board built from `projects/`, today's meetings, email
 - Set `"theme"` in `dashboard.json` to `default`, `autumn` or `christmas` to change the look.
 - `scripts/dashboard serve` also serves it on `http://127.0.0.1:8771/` so emails can be archived from the page.
 - `/dashboard` in Claude Code refreshes meetings and emails.
+- Add list panels, such as parcels on the way, under `"panels"` in `dashboard.json`: a feed name, a title, and instructions that tell `/dashboard` how to fill it. See spec section 6.7.
 - `scripts/install-scheduler.sh` installs a launchd agent that runs `/dashboard` every half hour from 8:00 to 17:30 on weekdays. Output goes to `dashboard/refresh.log`.
 
 Project hooks in `.claude/settings.json` regenerate the page after every turn, ask Claude to archive queued emails, and start and stop the server with the session.

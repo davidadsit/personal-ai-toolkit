@@ -22,15 +22,89 @@ public class PageRendererTests
         MeetingsFeed? meetings = null,
         EmailsFeed? emails = null,
         OpenItemsFeed? openItems = null,
-        string theme = "default")
+        string theme = "default",
+        IReadOnlyList<ListPanel>? listPanels = null)
     {
         plans ??= [];
-        var snapshot = new WorkspaceSnapshot(new DashboardSettings { Theme = theme }, plans, meetings, emails, openItems);
+        var snapshot = new WorkspaceSnapshot(new DashboardSettings { Theme = theme }, plans, meetings, emails, openItems, listPanels ?? []);
         return PageRenderer.Render(new PageContent(snapshot, Builder.Build(plans, Today), GeneratedAt));
     }
 
     private static string Section(string html, string id) =>
         Regex.Match(html, $"<section id=\"{id}\".*?</section>", RegexOptions.Singleline).Value;
+
+    private static ListPanel Parcels(params ListPanelRow[] rows) =>
+        new(new ListPanelSettings("parcels", "Parcels"), new ListPanelFeed("2026-11-18 08:00", rows));
+
+    private static string RenderParcels(params ListPanelRow[] rows) =>
+        Section(Render(listPanels: [Parcels(rows)]), "panel-parcels");
+
+    [Fact]
+    public void List_panels_render_between_meetings_and_emails_in_declared_order()
+    {
+        var holds = new ListPanel(new ListPanelSettings("library-holds", "Library holds"), null);
+
+        var page = Render(listPanels: [Parcels(), holds]);
+
+        var order = new[] { "id=\"meetings\"", "id=\"panel-parcels\"", "id=\"panel-library-holds\"", "id=\"emails\"" }
+            .Select(marker => page.IndexOf(marker, StringComparison.Ordinal)).ToList();
+        Assert.DoesNotContain(-1, order);
+        Assert.Equal(order.Order(), order);
+        Assert.Contains("<h2 class=\"label\">Library holds</h2>", page);
+    }
+
+    [Fact]
+    public void List_panel_without_a_feed_asks_for_a_refresh()
+    {
+        var page = Render(listPanels: [new ListPanel(new ListPanelSettings("parcels", "Parcels"), null)]);
+
+        Assert.Contains("No data yet. Run /dashboard.", Section(page, "panel-parcels"));
+    }
+
+    [Fact]
+    public void List_panel_with_no_rows_shows_the_refresh_time_and_nothing_to_show()
+    {
+        var panel = RenderParcels();
+
+        Assert.Contains("Refreshed 2026-11-18 8:00 AM", panel);
+        Assert.Contains("Nothing to show.", panel);
+    }
+
+    [Fact]
+    public void List_panel_rows_sort_by_date_then_time_with_undated_rows_last()
+    {
+        var panel = RenderParcels(
+            new ListPanelRow("Undated first in file"),
+            new ListPanelRow("Later day", Date: "2026-11-24"),
+            new ListPanelRow("Same day afternoon", Date: "2026-11-20", Time: "14:00"),
+            new ListPanelRow("Undated second in file", Date: "soon"),
+            new ListPanelRow("Same day morning", Date: "2026-11-20", Time: "09:00"));
+
+        var titles = Regex.Matches(panel, "<div class=\"row-title\">(.*?)</div>").Select(match => match.Groups[1].Value);
+        Assert.Equal(["Same day morning", "Same day afternoon", "Later day", "Undated first in file", "Undated second in file"], titles);
+    }
+
+    [Fact]
+    public void List_panel_row_shows_subtitle_status_and_short_date_with_time()
+    {
+        var panel = RenderParcels(new ListPanelRow("Garden hose", "Hardware store", "**Shipped**", "2026-11-24", "14:00"));
+
+        Assert.Contains("<div class=\"muted\">Hardware store</div>", panel);
+        Assert.Contains("<div class=\"row-status\"><strong>Shipped</strong></div>", panel);
+        Assert.Contains("<div class=\"row-when\">Tue 11/24 2:00 PM</div>", panel);
+    }
+
+    [Fact]
+    public void List_panel_row_title_is_a_link_only_for_https()
+    {
+        var panel = RenderParcels(
+            new ListPanelRow("Tracked", Link: "https://example.com/track/1"),
+            new ListPanelRow("Untracked", Link: "javascript:alert(1)"));
+
+        Assert.Contains("<a href=\"https://example.com/track/1\" target=\"_blank\" rel=\"noopener\">Tracked</a>", panel);
+        Assert.Contains("<div class=\"row-title\">Untracked</div>", panel);
+        Assert.DoesNotContain("javascript:", panel);
+    }
 
     [Fact]
     public void Header_shows_generation_time_and_reload_interval()

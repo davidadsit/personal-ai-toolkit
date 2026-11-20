@@ -8,12 +8,25 @@ public sealed class WorkspaceReader(string root)
 {
     private readonly WorkspacePaths paths = new(root);
 
-    public WorkspaceSnapshot Read() => new(
-        FeedJson.ReadIfExists<DashboardSettings>(paths.Settings) ?? new DashboardSettings(),
-        ReadPlans(),
-        FeedJson.ReadIfExists<MeetingsFeed>(paths.Meetings),
-        FeedJson.ReadIfExists<EmailsFeed>(paths.Emails),
-        FeedJson.ReadIfExists<OpenItemsFeed>(paths.OpenItems));
+    public WorkspaceSnapshot Read()
+    {
+        var settings = FeedJson.ReadIfExists<DashboardSettings>(paths.Settings) ?? new DashboardSettings();
+        return new(
+            settings,
+            ReadPlans(),
+            FeedJson.ReadIfExists<MeetingsFeed>(paths.Meetings),
+            FeedJson.ReadIfExists<EmailsFeed>(paths.Emails),
+            FeedJson.ReadIfExists<OpenItemsFeed>(paths.OpenItems),
+            ReadListPanels(settings.Panels));
+    }
+
+    private IReadOnlyList<ListPanel> ReadListPanels(IReadOnlyList<ListPanelSettings> panels)
+    {
+        FeedNames.EnsureValid(panels);
+        return panels
+            .Select(panel => new ListPanel(panel, FeedJson.ReadIfExists<ListPanelFeed>(paths.ListPanelFeed(panel.Feed))))
+            .ToList();
+    }
 
     private IReadOnlyList<ProjectPlan> ReadPlans()
     {

@@ -8,4 +8,5 @@ public sealed record WorkspaceSnapshot(
     IReadOnlyList<ProjectPlan> Plans,
     MeetingsFeed? Meetings,
     EmailsFeed? Emails,
-    OpenItemsFeed? OpenItems);
+    OpenItemsFeed? OpenItems,
+    IReadOnlyList<ListPanel> ListPanels);

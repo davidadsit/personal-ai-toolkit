@@ -70,6 +70,45 @@ public sealed class WorkspaceReaderTests : IDisposable
     }
 
     [Fact]
+    public void Reads_the_feed_of_each_declared_list_panel()
+    {
+        WriteFile("dashboard.json", """{ "panels": [ { "feed": "parcels", "title": "Parcels", "instructions": "Find shipping mail." }, { "feed": "library-holds", "title": "Library holds" } ] }""");
+        WriteFile("dashboard/parcels.json", """{ "refreshed": "2026-11-17 08:05", "rows": [ { "title": "Garden hose", "date": "2026-11-20" } ] }""");
+
+        var panels = new WorkspaceReader(root).Read().ListPanels;
+
+        Assert.Equal(["Parcels", "Library holds"], panels.Select(panel => panel.Settings.Title));
+        var row = panels[0].Feed!.Rows.Single();
+        Assert.Equal(("Garden hose", "2026-11-20", "", ""), (row.Title, row.Date, row.Subtitle, row.Link));
+        Assert.Null(panels[1].Feed);
+    }
+
+    [Theory]
+    [InlineData("Parcels")]
+    [InlineData("../secrets")]
+    [InlineData("")]
+    [InlineData("emails")]
+    [InlineData("archive-queue")]
+    public void Rejects_an_invalid_or_reserved_feed_name(string feed)
+    {
+        WriteFile("dashboard.json", $$"""{ "panels": [ { "feed": "{{feed}}", "title": "Panel" } ] }""");
+
+        var error = Assert.Throws<InvalidOperationException>(() => new WorkspaceReader(root).Read());
+
+        Assert.Contains($"'{feed}'", error.Message);
+    }
+
+    [Fact]
+    public void Rejects_a_feed_declared_twice()
+    {
+        WriteFile("dashboard.json", """{ "panels": [ { "feed": "parcels", "title": "A" }, { "feed": "parcels", "title": "B" } ] }""");
+
+        var error = Assert.Throws<InvalidOperationException>(() => new WorkspaceReader(root).Read());
+
+        Assert.Contains("'parcels'", error.Message);
+    }
+
+    [Fact]
     public void Finds_the_root_from_a_nested_folder()
     {
         WriteFile("dashboard.json", "{}");

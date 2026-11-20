@@ -84,6 +84,31 @@ public sealed class GeneratingTheDashboardTests : IDisposable
     }
 
     [Fact]
+    public void A_declared_list_panel_shows_its_rows_by_date_between_meetings_and_emails()
+    {
+        WriteFile("dashboard.json", """{ "timeZone": "America/Denver", "panels": [ { "feed": "parcels", "title": "Parcels", "instructions": "Find shipping mail." } ] }""");
+        WriteFile("dashboard/parcels.json", """{ "refreshed": "2026-11-18 08:00", "rows": [ { "title": "Paint rollers", "subtitle": "Hardware store", "status": "Ordered", "date": "2026-11-24" }, { "title": "Garden hose", "status": "Out for delivery", "date": "2026-11-18", "link": "https://example.com/track/1001" } ] }""");
+
+        var page = GeneratePage();
+
+        var parcels = page.IndexOf("<h2 class=\"label\">Parcels</h2>", StringComparison.Ordinal);
+        Assert.InRange(parcels, page.IndexOf("Meetings today", StringComparison.Ordinal), page.IndexOf("Emails to address", StringComparison.Ordinal));
+        Assert.True(page.IndexOf("Garden hose", StringComparison.Ordinal) < page.IndexOf("Paint rollers", StringComparison.Ordinal));
+        Assert.Contains("Wed 11/18", page);
+        Assert.Contains("Tue 11/24", page);
+    }
+
+    [Fact]
+    public void A_reserved_list_panel_feed_name_stops_generation()
+    {
+        WriteFile("dashboard.json", """{ "panels": [ { "feed": "emails", "title": "Mail again" } ] }""");
+
+        var error = Assert.Throws<InvalidOperationException>(GeneratePage);
+
+        Assert.Contains("'emails'", error.Message);
+    }
+
+    [Fact]
     public void Generating_twice_with_the_same_inputs_and_clock_gives_the_same_page()
     {
         Assert.Equal(GeneratePage(), GeneratePage());

@@ -31,6 +31,7 @@ public static class PageRenderer
             </main>
             <aside id="panels">
             {MeetingsSection.Render(content.Snapshot.Meetings, settings, content.Today)}
+            {string.Concat(content.Snapshot.ListPanels.Select(ListPanelSection.Render))}
             {EmailsSection.Render(content.Snapshot.Emails)}
             {OpenItemsSection.Render(content.Snapshot.OpenItems, content.Board.Projects)}
             </aside>

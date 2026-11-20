@@ -10,6 +10,7 @@ public sealed record DashboardSettings
     public int DoneShown { get; init; } = 2;
     public int RecentBusinessDays { get; init; } = 2;
     public string Theme { get; init; } = "default";
+    public IReadOnlyList<ListPanelSettings> Panels { get; init; } = [];
 
     public TimeZoneInfo TimeZoneInfo => TimeZoneInfo.FindSystemTimeZoneById(TimeZone);
 }

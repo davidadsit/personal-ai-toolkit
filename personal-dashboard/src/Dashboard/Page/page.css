@@ -115,3 +115,9 @@ body.flash::after {
   .lane.collapsed { flex: none; padding: 10px; }
   .lane.collapsed .lane-toggle { writing-mode: horizontal-tb; margin: 2px; }
 }
+
+.list-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto; gap: 12px; align-items: baseline; }
+.row-title { font-weight: 600; }
+.list-row .muted { font-size: 12px; }
+.row-status { color: var(--muted); font-size: 13px; text-align: center; }
+.row-when { font-size: 13px; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
