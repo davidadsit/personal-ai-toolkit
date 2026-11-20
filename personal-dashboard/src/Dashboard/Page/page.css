@@ -16,8 +16,8 @@ body {
 #panels { grid-column: 2; grid-row: 2; overflow: auto; padding: 18px 16px 18px 4px; }
 .conversion-strip { display: flex; border-radius: 999px; overflow: hidden; border: 1px solid var(--border); }
 .strip-cell { flex: 1 1 0; min-width: 0; padding: 3px 2px; text-align: center; font-size: 10px; line-height: 1.25; color: #1f2620; display: flex; align-items: center; justify-content: center; }
-.weather { display: flex; flex-wrap: wrap; gap: 10px; }
-.weather-place { flex: 1 1 0; min-width: 220px; padding: 8px 16px; border-radius: 10px; font-size: 17px; text-align: center; color: #1f2620; border: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+.weather { display: flex; border-radius: 999px; overflow: hidden; border: 1px solid var(--border); }
+.weather-place { flex: 1 1 0; min-width: 0; padding: 8px 16px; font-size: 17px; text-align: center; color: #1f2620; font-variant-numeric: tabular-nums; }
 h1 { font-family: var(--heading-font); font-size: 24px; margin: 0; }
 .generated { color: var(--muted); margin: 4px 0 16px; }
 a { color: var(--accent); text-decoration: none; }
@@ -117,6 +117,7 @@ body.flash::after {
   #banner { padding: 10px 16px 0; }
   .conversion-strip { overflow-x: auto; }
   .strip-cell { flex: 0 0 auto; padding: 3px 8px; }
+  .weather { flex-direction: column; border-radius: 14px; }
   #work, #panels { overflow: visible; padding: 16px; }
 }
 @media (max-width: 759px) {
