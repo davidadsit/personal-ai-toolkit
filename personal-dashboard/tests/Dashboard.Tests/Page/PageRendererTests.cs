@@ -179,6 +179,16 @@ public class PageRendererTests
     }
 
     [Fact]
+    public void Weather_places_come_before_the_conversion_strip()
+    {
+        var feed = new WeatherFeed("2026-11-18 08:00", [new PlaceWeather("Springfield", 41, 48, 29, 0)]);
+
+        var banner = Banner(Render(weather: TwoTowns with { ConversionStrip = true }, weatherFeed: feed));
+
+        Assert.True(banner.IndexOf("class=\"weather\"", StringComparison.Ordinal) < banner.IndexOf("class=\"conversion-strip\"", StringComparison.Ordinal));
+    }
+
+    [Fact]
     public void Weather_without_a_feed_asks_for_a_refresh()
     {
         Assert.Contains("Weather: no data yet. Run /dashboard.", Banner(Render(weather: TwoTowns)));

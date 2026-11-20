@@ -319,9 +319,9 @@ Each project takes one of the theme's 10 colours, cycled by its position in the 
 
 ### 6.8 Weather banner
 
-- **Placement:** across the top of the page, above both columns. It is left out when there are no places and the conversion strip is off.
+- **Placement:** across the top of the page, above both columns, with the places above the conversion strip. It is left out when there are no places and the conversion strip is off.
 - **Conversion strip:** one rounded bar of 17 cells, −40°C to 40°C in steps of 5, each labelled like "−40°C / −40°F" and coloured by its temperature.
-- **Places:** one rounded chip per place in the weather feed, such as "**Springfield, IL** 41°F Clear · H 48° L 29°", coloured by the current temperature. When places are configured but the feed is missing: "Weather: no data yet. Run /dashboard."
+- **Places:** one large rounded block per place in the weather feed, sharing the full width equally and wrapping onto another line on narrow windows, such as "**Springfield, IL** 41°F Clear · H 48° L 29°", coloured by the current temperature. When places are configured but the feed is missing: "Weather: no data yet. Run /dashboard."
 - **Colour scale:** from rgb(140, 175, 250) at −40°C and below, through white at 20°C, to rgb(242, 130, 115) at 40°C and above, mixed linearly. Text on the strip and chips stays dark in both colour schemes.
 - **Conditions:** 0 Clear, 1–2 Partly cloudy, 3 Cloudy, 45 and 48 Fog, 51–57 Drizzle, 61–67 Rain, 71–77 Snow, 80–82 Showers, 85–86 Snow showers, 95–99 Thunderstorm. Any other code shows no condition.
 
