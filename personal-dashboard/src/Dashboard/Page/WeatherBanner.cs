@@ -14,7 +14,7 @@ public static class WeatherBanner
     public static string Render(WeatherSettings settings, WeatherFeed? feed)
     {
         var parts = (settings.Places.Count > 0 ? Places(feed) : "") + (settings.ConversionStrip ? ConversionStrip() : "");
-        return parts == "" ? "" : $"""<header id="banner">{parts}</header>""";
+        return parts == "" ? "" : $"""<header id="banner"><div class="banner-pill">{parts}</div></header>""";
     }
 
     private static string ConversionStrip()
